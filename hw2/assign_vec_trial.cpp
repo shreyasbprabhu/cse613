@@ -116,7 +116,7 @@ vector<int> par_deterministic_cc(int n, struct edge_struct *E, int E_size,vector
 		else if( n1 < n2 && E[i].u > E[i].v)
 			L[E[i].u] = E[i].v;
 	}
-	printf("n1 n2 %d %d \n",n1 ,n2);
+	// printf("n1 n2 %d %d \n",n1 ,n2);
 	L = find_roots(n,L,L);
 	cilk_for(int i = 1; i < E_size; i++)
 	{
