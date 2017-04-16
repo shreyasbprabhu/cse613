@@ -152,8 +152,8 @@ int main()
 	}
 
 	L = par_deterministic_cc(vertices+1,E,L);
-	// for(int i = 0; i < L.size() ; i ++ )
-		//printf("L[%d] %d\n",i,L[i] );
+	for(int i = 0; i < L.size() ; i ++ )
+		printf("L[%d] %d\n",i,L[i] );
 }
 
 
