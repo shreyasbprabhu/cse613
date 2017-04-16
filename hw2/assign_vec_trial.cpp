@@ -95,9 +95,15 @@ vector<int> par_deterministic_cc(int n, struct edge_struct *E, int E_size,vector
 	cilk_for(int i = 1; i < E_size; i++)
 	{
 		if(E[i].u < E[i].v)
+		{
+			printf("less\n");
 			l2h[E[i].u] =  1;
+		}
 		else
+		{
+			printf("great\n");
 			h2l[E[i].u] = 1; 
+		}
 	}
 	int n1 = par_sum(l2h,n);
 	int n2 = par_sum(h2l,n);
