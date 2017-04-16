@@ -23,6 +23,32 @@ int par_sum(vector<int> &arr,int n)
 	return sum;
 }
 // vector
+// vector<int> parallel_prefix_sum(vector<int> &arr)
+// {
+// 	vector<int> S(arr.size());
+// 	if(arr.size() == 1)
+// 		S[0] = arr[0];
+// 	else
+// 	{
+// 		vector<int> y(arr.size()/2);
+// 		cilk_for(int i = 1; i < n/2 ;i++ )
+// 		{
+// 			y[i]  = arr[2*i-1] + arr[2*i];
+// 		}
+// 		vecto<int> Z(arr.size()/2) = parallel_prefix_sum(y);
+// 		cilk_for(int i = 1;i <= n; i++)
+// 		{
+// 			if(i == 1)
+// 				S[1] = arr[1];
+// 			else if(i%2 == 0)
+// 				S[i] = Z[i/2];
+// 			else
+// 				S[i] = Z[(i-1)/2] + arr[i];		
+// 		} 
+// 	}
+// 	return S; 
+
+// }
 vector<int> par_prefix_sum(vector<int> &arr)
 {
 
