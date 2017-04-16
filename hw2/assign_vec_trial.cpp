@@ -102,7 +102,7 @@ vector<int> par_deterministic_cc(int n, struct edge_struct *E, int E_size,vector
 	int n1 = par_sum(l2h,n);
 	int n2 = par_sum(h2l,n);
 
-	printf("hey 0\n");
+	// printf("hey 0\n");
 	//free(l2h);
 	//free(h2l);
 	cilk_for(int i = 1; i < E_size; i++)
@@ -112,19 +112,19 @@ vector<int> par_deterministic_cc(int n, struct edge_struct *E, int E_size,vector
 		else if( n1 < n2 && E[i].u > E[i].v)
 			L[E[i].u] = E[i].v;
 	}
-	printf("hey 1\n");
+	printf("n1 n2 %d %d \n",n1 ,n2);
 	L = find_roots(n,L,L);
 	cilk_for(int i = 1; i < E_size; i++)
 	{
 		S[i] = L[E[i].u] != L[E[i].v] ? 1 : 0;
 	}
-	printf("hey 2\n");
+	// printf("hey 2\n");
 	S[E_size] = 0;
 	par_prefix_sum(S, S_size);
 	int F_size =(S[E_size] + 1); 
-	printf("hey 3\n");
+	// printf("hey 3\n");
 	struct edge_struct *F = (struct edge_struct *)malloc(sizeof(struct edge_struct) * (S[E_size] + 1));
-	printf("hey 4\n");
+	// printf("hey 4\n");
 	cilk_for(int i = 1; i < E_size; i++)
 	{
 		if(L[E[i].u] != L[E[i].v])
