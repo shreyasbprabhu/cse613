@@ -2,6 +2,7 @@
 #include <iostream>
 #include <limits.h>
 #include <algorithm>
+#include <map>
 #include <cilk/cilk.h>
 #include <time.h>
 #include <math.h>
@@ -13,7 +14,7 @@ struct edge_struct
 	int u;
 	int v;
 };
-int par_sum(vector<int> &arr,int n)
+int par_sum(int *arr,int n)
 {
 	int sum = 0;
 	for(int i = 1;i < n; i++)
@@ -65,8 +66,11 @@ vector<int> par_deterministic_cc(int n,vector<edge_struct> &E,vector<int> &L)
 {
 	if (E.size() == 1)
 		return L;
-	vector<int> l2h(n);
-	vector<int> h2l(n);
+
+	//vector<int> l2h(n);
+	//vector<int> h2l(n);
+	int * l2h = (int *) malloc(n * sizeof(int));
+	int * h2l = (int *) malloc(n * sizeof(int));
 	vector<int> S(E.size()+1);
 	cilk_for(int i = 1; i < n; i++)
 	{
@@ -82,6 +86,8 @@ vector<int> par_deterministic_cc(int n,vector<edge_struct> &E,vector<int> &L)
 	}
 	int n1 = par_sum(l2h,n);
 	int n2 = par_sum(h2l,n);
+	free(l2h);
+	free(h2l);
 	cilk_for(int i = 1; i < E.size(); i++)
 	{
 		if( n1 >= n2 && E[i].u < E[i].v)
@@ -127,6 +133,23 @@ vector<int> par_deterministic_cc(int n,vector<edge_struct> &E,vector<int> &L)
 
 
 }
+int print_answer(vector<int> &L)
+{
+	map <int, int> answer;
+	for (int i = 1; i < L.size(); i++) {
+		answer[L[i]] ++;
+	}
+	printf("%d\n", answer.size());
+	vector<int>ans;
+	for (map<int,int>::iterator iter = answer.begin(); iter != answer.end(); ++iter) {
+
+		ans.push_back(iter->second);
+	}
+	sort(ans.begin(), ans.end());
+	for (int i = ans.size()-1; i >=0; i--) {
+		printf("%d\n", ans[i]);
+	}
+}
 int main()
 {
 	int vertices;
@@ -151,9 +174,14 @@ int main()
 		//printf("%d %d \n ",E[i].u,E[i].v);		
 	}
 
+	struct timespec ts0, ts1;
+	clock_gettime(CLOCK_MONOTONIC, &ts0);
 	L = par_deterministic_cc(vertices+1,E,L);
-	for(int i = 0; i < L.size() ; i ++ )
-		printf("L[%d] %d\n",i,L[i] );
+	clock_gettime(CLOCK_MONOTONIC, &ts1);
+	unsigned long int tim = (ts1.tv_sec - ts0.tv_sec) * 1000000000 + (ts1.tv_nsec - ts0.tv_nsec);
+	fprintf(stderr, "Time taken is %.6lf ms \n", (double)tim/1000000);
+	//sort(L.begin(), L.end());
+	print_answer(L);
 }
 
 

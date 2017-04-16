@@ -6,6 +6,7 @@
 #include <time.h>
 #include <math.h>
 #include <vector>
+#include <map>
 using namespace std;
 
 struct edge_struct
@@ -58,8 +59,8 @@ vector<int> par_randomized_cc(int n,vector<edge_struct> &E,vector<int> &L)
 	{
 		if(L[E[i].u] != L[E[i].v])
 		{
-				F[S[i]].u = L[E[i].u];
-				F[S[i]].v = L[E[i].v];
+			F[S[i]].u = L[E[i].u];
+			F[S[i]].v = L[E[i].v];
 		}
 	}
 	M = par_randomized_cc(n,F,L);
@@ -69,6 +70,23 @@ vector<int> par_randomized_cc(int n,vector<edge_struct> &E,vector<int> &L)
 			M[E[i].u] = M[E[i].v];
 	}
 	return M;
+}
+int print_answer(vector<int> &L)
+{
+	map <int, int> answer;
+	for (int i = 1; i < L.size(); i++) {
+		answer[L[i]] ++;
+	}
+	printf("%d\n", answer.size());
+	vector<int>ans;
+	for (map<int,int>::iterator iter = answer.begin(); iter != answer.end(); ++iter) {
+
+		ans.push_back(iter->second);
+	}
+	sort(ans.begin(), ans.end());
+	for (int i = ans.size()-1; i >=0; i--) {
+		printf("%d\n", ans[i]);
+	}
 }
 int main()
 {
@@ -94,9 +112,15 @@ int main()
 	// 	printf("%d %d \n ",E[i].u,E[i].v);		
 	// }
 
+	struct timespec ts0, ts1;
+	clock_gettime(CLOCK_MONOTONIC, &ts0);
 	L = par_randomized_cc(vertices+1,E,L);
-	for(int i = 0; i < L.size() ; i ++ )
-		printf("L[%d] %d\n",i,L[i] );
+
+	clock_gettime(CLOCK_MONOTONIC, &ts1);
+	unsigned long int tim = (ts1.tv_sec - ts0.tv_sec) * 1000000000 + (ts1.tv_nsec - ts0.tv_nsec);
+	fprintf(stderr, "Time taken is %.6lf ms \n", (double)tim/1000000);
+
+	print_answer(L);
 }
 
 
