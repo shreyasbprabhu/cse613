@@ -96,12 +96,10 @@ vector<int> par_deterministic_cc(int n, struct edge_struct *E, int E_size,vector
 	{
 		if(E[i].u < E[i].v)
 		{
-			printf("less\n");
 			l2h[E[i].u] =  1;
 		}
 		else
 		{
-			printf("great\n");
 			h2l[E[i].u] = 1; 
 		}
 	}
@@ -135,8 +133,8 @@ vector<int> par_deterministic_cc(int n, struct edge_struct *E, int E_size,vector
 	{
 		if(L[E[i].u] != L[E[i].v])
 		{
-				F[S[i]].u = L[E[i].u];
-				F[S[i]].v = L[E[i].v];
+				F[S[i]].u = min(L[E[i].u],L[E[i].v]);
+				F[S[i]].v = max(L[E[i].u],L[E[i].v]);
 				// //printf("F %d %d\n",F[S[i]].u,F[S[i]].v);
 		}
 	}
