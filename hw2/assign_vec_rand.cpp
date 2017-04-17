@@ -110,7 +110,7 @@ int * par_randomized_cc(int n, struct edge_struct *E, int E_size,int *L)
 	// printf("hi 6\n");
 	free(S);
 	free(E);
-	free(L);
+	// free(L);
 	// E.clear();
 	// L.clear();
 	return M;
