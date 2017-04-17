@@ -14,18 +14,10 @@ struct edge_struct
 	int u;
 	int v;
 };
-int par_sum(int *arr,int n)
-{
-	int sum = 0;
-	for(int i = 1;i < n; i++)
-	{
-		sum = sum + arr[i];
-	}
-	return sum;
-}
+
 void par_prefix_sum(int *arr, int n)
 {
-	if (n < 32) {
+	if (n <= 1000) {
 		int i = 0;
 		int sum = 0;
 		while(i < n)
@@ -49,6 +41,15 @@ void par_prefix_sum(int *arr, int n)
 		free(Y);
 	}
 
+}
+int par_sum(int *arr,int n)
+{
+	int sum = 0;
+	for(int i = 1;i < n; i++)
+	{
+		sum = sum + arr[i];
+	}
+	return sum;
 }
 vector<int> find_roots(int n,vector<int> P,vector<int> S)
 {
