@@ -60,12 +60,15 @@ vector<int> par_randomized_cc(int n,vector<edge_struct> &E,vector<int> &L)
 			F[S[i]].v = max(L[E[i].u],L[E[i].v]);
 		}
 	}
+	S.clear();
 	M = par_randomized_cc(n,F,L);
 	cilk_for(int i = 1; i < E.size(); i++)
 	{
 		if(E[i].v == L[E[i].u])
 			M[E[i].u] = M[E[i].v];
 	}
+	E.clear();
+	L.clear();
 	return M;
 }
 int print_answer(vector<int> &L)
