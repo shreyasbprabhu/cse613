@@ -30,19 +30,16 @@ vector<int> par_prefix_sum(vector<int> &arr)
 	return arr;
 	
 }
-
-
+int *C;
 vector<int> par_randomized_cc(int n,vector<edge_struct> &E,vector<int> &L)
 {
 	if (E.size() == 1)
 		return L;
-	vector<int> C(n);
 	vector<int> M(n);
 	vector<int> S(E.size()+1);
 	cilk_for(int i = 1; i < n; i++)
 	{
 		C[i] = rand() % 2 ;
-
 	}
 	cilk_for(int i = 1; i < E.size(); i++)
 	{
@@ -59,16 +56,19 @@ vector<int> par_randomized_cc(int n,vector<edge_struct> &E,vector<int> &L)
 	{
 		if(L[E[i].u] != L[E[i].v])
 		{
-			F[S[i]].u = L[E[i].u];
-			F[S[i]].v = L[E[i].v];
+			F[S[i]].u = min(L[E[i].u],L[E[i].v]);
+			F[S[i]].v = max(L[E[i].u],L[E[i].v]);
 		}
 	}
+	S.clear();
 	M = par_randomized_cc(n,F,L);
 	cilk_for(int i = 1; i < E.size(); i++)
 	{
 		if(E[i].v == L[E[i].u])
 			M[E[i].u] = M[E[i].v];
 	}
+	E.clear();
+	L.clear();
 	return M;
 }
 int print_answer(vector<int> &L)
@@ -94,23 +94,19 @@ int main()
 	int edges;
 	int i = 0;
 	scanf("%d %d",&vertices,&edges);
-	// ////printf("%d %d",vertices,edges);
 	vector<edge_struct> E(edges+1);
 	for( i = 1; i < edges+1; i++)
 	{
 		scanf("%d %d",&E[i].u,&E[i].v);
-		// ////printf("%d %d \n ",E[i].u,E[i].v);
-
 	}
 	vector<int> L(vertices+1);
 	for( i = 1; i < vertices+1; i++)
 	{
 		L[i] = i;
 	}
-	// for( i = 0; i < edges+1; i++)
-	// {
-	// 	printf("%d %d \n ",E[i].u,E[i].v);		
-	// }
+	int n = vertices + 1;
+	
+	C = (int *) malloc(sizeof(int) * n);
 
 	struct timespec ts0, ts1;
 	clock_gettime(CLOCK_MONOTONIC, &ts0);
