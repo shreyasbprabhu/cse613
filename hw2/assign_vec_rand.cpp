@@ -62,7 +62,7 @@ int * par_randomized_cc(int n, struct edge_struct *E, int E_size,int *L)
 {
 	if (E_size == 1)
 		return L;
-	int *M 
+	int *M ;
 	// vector<int> M(n);
 	int S_size = E_size+1;
 
