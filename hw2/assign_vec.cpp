@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <map>
 #include <cilk/cilk.h>
+#include <cilktools/cilkview.h>
 #include <time.h>
 #include <math.h>
 #include <vector>
@@ -172,6 +173,10 @@ int main()
 
 	}
 	clock_gettime(CLOCK_MONOTONIC, &ts0);
+	cilkview_data_t start_data;
+	__cilkview_query(start_data);
+	char testname[] = "tesT";
+	//std::strncat(testname, "-PBFS", 5);
 	vector<int> L(vertices+1);
 	for( i = 1; i < vertices+1; i++)
 	{
@@ -183,6 +188,7 @@ int main()
 
 	L = par_deterministic_cc(vertices+1,E, edges+1,L);
 	clock_gettime(CLOCK_MONOTONIC, &ts1);
+	__cilkview_do_report(&start_data, NULL, "testfile", CV_REPORT_WRITE_TO_LOG);
 	print_answer(L);
 	unsigned long int tim = (ts1.tv_sec - ts0.tv_sec) * 1000000000 + (ts1.tv_nsec - ts0.tv_nsec);
 	fprintf(stderr, "Time taken is %.6lf ms \n", (double)tim/1000000);
